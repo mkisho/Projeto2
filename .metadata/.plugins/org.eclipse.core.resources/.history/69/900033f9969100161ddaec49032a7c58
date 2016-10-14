@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 
-import javax.swing.text.html.MinimalHTMLWriter;
-
 
 class ClientHasBooks{
 	final ClientInterface owner;
@@ -55,7 +53,7 @@ class ClientHasBooks{
 	 * @param id
 	 * @return
 	 */
-	public long removeBook(long id){
+	public long removeBook(int id){
 		Long [] elem = this.books.stream().filter(x -> x[0] == id).findFirst().get();
 		books.remove(elem);
 		return elem[1];
@@ -129,9 +127,7 @@ public class Library {
 						if(e.get().howManyBooks() > Config.MAX_BOOKS){
 							return ServerMessage.MAX_BOOK_REACHED;
 						}
-						if(e.get().isGiveBackTimeOver()){
-							return ServerMessage.GIVE_BACK_BOOKS;
-						}
+						if();
 						e.get().addBook(bookId);
 						elem.setValue(e.get());
 					}else{
@@ -140,22 +136,10 @@ public class Library {
 						this.clientsBooksList.add(clientHasBooks);
 						elem.setValue(clientHasBooks);
 					}
+					//TODO checar GIVE_BACK_BOOK 
 					//TODO Implementar método de renovação
 					return ServerMessage.OPERATION_SUCESSFULL;
-				}else if(elem.getValue().owner == client){
-					//AQUI ELE RENOVA
-					Optional<ClientHasBooks> e = this.clientsBooksList.stream().filter(x -> x.owner == client).findFirst();					
-					if(e.get().isGiveBackTimeOver()){
-						return ServerMessage.GIVE_BACK_BOOKS;
-					}
-					elem.getValue().removeBook(bookId);
-					ClientHasBooks clientHasBooks = new ClientHasBooks(client);
-					clientHasBooks.addBook(bookId);
-					this.clientsBooksList.add(clientHasBooks);
-					elem.setValue(clientHasBooks);
-					return ServerMessage.OPERATION_SUCESSFULL;
-				}				
-				else{
+				}else{
 					//livro jﾃ｡ estﾃ｡ rented
 					return ServerMessage.ALREADY_BOOKED;
 				}
@@ -166,25 +150,6 @@ public class Library {
 	}
 	
 	public long giveBackBooks(long bookId){
-		long penalty=0;
-		Entry<Book, ClientHasBooks> elem = this.bookList.entrySet().stream().filter(x -> x.getKey().id == bookId).findFirst().get();
-		if(elem.getValue() == null){
-			//Não está emprestado
-		}
-		else{
-//			Optional<ClientHasBooks> e = this.clientsBooksList.stream().filter(x -> x == elem.getValue().owner).findFirst();
-			long e=0;
-			for(int i = 0; i < elem.getValue().books.size(); i++){
-			       if(  elem.getValue().books.get(i)[0] == bookId){
-			               e = elem.getValue().books.get(i)[1];
-			               if(System.currentTimeMillis() - e > Config.TIME_EMPRESTADO){
-			            	   penalty=((System.currentTimeMillis()-e)/Config.TIME_EMPRESTADO)*Config.TIME_PENALIZATION;
-			               }
-			       }
-			}
-			elem.getValue().removeBook(bookId);
-			
-		}
-		return penalty;
+		//TODO implementar
 	}
 }

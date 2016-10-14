@@ -142,20 +142,7 @@ public class Library {
 					}
 					//TODO Implementar método de renovação
 					return ServerMessage.OPERATION_SUCESSFULL;
-				}else if(elem.getValue().owner == client){
-					//AQUI ELE RENOVA
-					Optional<ClientHasBooks> e = this.clientsBooksList.stream().filter(x -> x.owner == client).findFirst();					
-					if(e.get().isGiveBackTimeOver()){
-						return ServerMessage.GIVE_BACK_BOOKS;
-					}
-					elem.getValue().removeBook(bookId);
-					ClientHasBooks clientHasBooks = new ClientHasBooks(client);
-					clientHasBooks.addBook(bookId);
-					this.clientsBooksList.add(clientHasBooks);
-					elem.setValue(clientHasBooks);
-					return ServerMessage.OPERATION_SUCESSFULL;
-				}				
-				else{
+				}else{
 					//livro jﾃ｡ estﾃ｡ rented
 					return ServerMessage.ALREADY_BOOKED;
 				}
@@ -183,7 +170,7 @@ public class Library {
 			       }
 			}
 			elem.getValue().removeBook(bookId);
-			
+		
 		}
 		return penalty;
 	}

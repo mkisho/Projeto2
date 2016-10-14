@@ -6,6 +6,5 @@ public class Config {
 	public static final long TIME_PENALIZATION = 0;
 	public static final long TIME_RESERVADO = 0;
 	public static final long TIME_BOOK_RESERVED = 0;
-	public static final long TIME_EMPRESTADO = 0;
 
 }
